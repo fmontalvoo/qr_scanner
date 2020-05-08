@@ -4,6 +4,7 @@ import 'package:qr_scanner/src/pages/address_page.dart';
 import 'package:qr_scanner/src/pages/map_page.dart';
 
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:qr_scanner/src/providers/db_provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -58,12 +59,13 @@ class _HomePageState extends State<HomePage> {
 
   _scanQR() async {
     // geo:-0.19243346655079838,-78.45815077265628
-    dynamic scan = '';
-    try {
-      scan = await BarcodeScanner.scan();
-    } catch (e) {
-      scan = e.toString();
-    }
-    print('QR>${scan.rawContent}');
+    // https://github.com/fmontalvoo
+    dynamic scan = 'https://github.com/fmontalvoo';
+    // try {
+    //   scan = await BarcodeScanner.scan();
+    // } catch (e) {
+    //   scan = e.toString();
+    // }
+    if (scan != null) DBProvider.db.crear(ScanModel(valor: scan));
   }
 }
