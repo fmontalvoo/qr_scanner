@@ -1,21 +1,35 @@
 import 'dart:async';
 
+import 'package:qr_scanner/src/bloc/validators.dart';
 import 'package:qr_scanner/src/providers/db_provider.dart';
 
-class ScanBloc {
+class ScanBloc with Validators {
   static final ScanBloc _bloc = ScanBloc._internal();
 
   factory ScanBloc() {
     return _bloc;
   }
 
-  ScanBloc._internal(){
+  ScanBloc._internal() {
     listar();
   }
 
   final _streamController = StreamController<List<ScanModel>>.broadcast();
 
-  Stream<List<ScanModel>> get getStream => _streamController.stream;
+  // Stream<List<ScanModel>> get getStream {
+  //   listar();
+  //   return _streamController.stream;
+  // }
+
+  Stream<List<ScanModel>> get getStreamGEO {
+    listar();
+    return _streamController.stream.transform(validarGEO);
+  }
+
+  Stream<List<ScanModel>> get getStreamHTTP {
+    listar();
+    return _streamController.stream.transform(validarHTTP);
+  }
 
   void dispose() {
     _streamController?.close();

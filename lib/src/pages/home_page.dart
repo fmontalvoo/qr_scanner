@@ -64,14 +64,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   _scanQR() async {
-    // geo:-0.19243346655079838,-78.45815077265628
-    // https://github.com/fmontalvoo
-    dynamic scan = 'https://github.com/fmontalvoo';
-    // try {
-    //   scan = await BarcodeScanner.scan();
-    // } catch (e) {
-    //   scan = e.toString();
-    // }
-    if (scan != null) bloc.crear(ScanModel(valor: scan));
+    // ScanResult scan;
+    dynamic scan;
+    try {
+      scan = await BarcodeScanner.scan();
+    } catch (e) {
+      scan = e.toString();
+    }
+    if (scan != null) bloc.crear(ScanModel(valor: scan.rawContent));
   }
 }

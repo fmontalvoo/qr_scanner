@@ -11,7 +11,7 @@ class MapsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: bloc.getStream,
+        stream: bloc.getStreamGEO,
         builder:
             (BuildContext context, AsyncSnapshot<List<ScanModel>> snapshot) {
           if (!snapshot.hasData) {
@@ -28,7 +28,7 @@ class MapsPage extends StatelessWidget {
                 background: Container(color: Colors.red),
                 onDismissed: (direction) => bloc.eliminar(lista[index].id),
                 child: ListTile(
-                  leading: Icon(Icons.open_in_browser),
+                  leading: Icon(Icons.map),
                   title: Text(lista[index].valor),
                   subtitle: Text(
                       'ID: ${lista[index].id} | TYPE: ${lista[index].tipo}'),
