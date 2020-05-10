@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:path/path.dart';
+
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:qr_scanner/src/models/scan_model.dart';
 export 'package:qr_scanner/src/models/scan_model.dart';
 
@@ -11,6 +10,7 @@ class DBProvider {
   static final DBProvider db = DBProvider._();
 
   DBProvider._();
+  // DBProvider();
 
   Future<Database> get getDatabase async {
     if (_database != null) return _database;
@@ -20,9 +20,9 @@ class DBProvider {
   }
 
   Future<Database> initDB() async {
-    // var databasesPath = await getDatabasesPath();
-    Directory directory = await getApplicationDocumentsDirectory();
-    final path = join(directory.path, 'ScanDB');
+    var databasesPath = await getDatabasesPath();
+    // Directory directory = await getApplicationDocumentsDirectory();
+    final path = join(databasesPath, 'ScanDB');
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       await db.execute('CREATE TABLE Scan('
@@ -55,6 +55,12 @@ class DBProvider {
   Future<int> eliminar(int id) async {
     final db = await getDatabase;
     final res = await db.delete('Scan', where: 'id = ?', whereArgs: [id]);
+    return res;
+  }
+
+  Future<int> eliminarRegistros() async {
+    final db = await getDatabase;
+    final res = await db.delete('Scan');
     return res;
   }
 

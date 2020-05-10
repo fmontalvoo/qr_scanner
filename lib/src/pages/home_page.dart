@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:qr_scanner/src/models/scan_model.dart';
 
-import 'package:qr_scanner/src/pages/address_page.dart';
-import 'package:qr_scanner/src/pages/map_page.dart';
+import 'package:qr_scanner/src/pages/addresses_page.dart';
+import 'package:qr_scanner/src/pages/maps_page.dart';
+
+import 'package:qr_scanner/src/bloc/scan_bloc.dart';
 
 import 'package:barcode_scan/barcode_scan.dart';
-import 'package:qr_scanner/src/providers/db_provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,13 +15,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
+  final bloc = ScanBloc();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('QR Scanner'),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.delete_forever), onPressed: () {})
+          IconButton(
+              icon: Icon(Icons.delete_forever),
+              onPressed: bloc.eliminarRegistros)
         ],
       ),
       body: _loadPage(index),
@@ -33,9 +39,9 @@ class _HomePageState extends State<HomePage> {
   Widget _loadPage(int index) {
     switch (index) {
       case 0:
-        return MapPage();
+        return MapsPage();
       case 1:
-        return AddressPage();
+        return AddressesPage();
       default:
         return null;
     }
@@ -66,6 +72,6 @@ class _HomePageState extends State<HomePage> {
     // } catch (e) {
     //   scan = e.toString();
     // }
-    if (scan != null) DBProvider.db.crear(ScanModel(valor: scan));
+    if (scan != null) bloc.crear(ScanModel(valor: scan));
   }
 }
